@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mallesh C N | DevOps Engineer | Cloud & Automation Engineer</title>
+    <meta name="description" content="Portfolio of Mallesh C N, DevOps Engineer specializing in infrastructure automation, cloud platforms, and AI-driven operational tooling.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0B1120',
+                        darkCard: '#111827',
+                        darkPrimary: '#38BDF8',
+                        darkSecondary: '#22C55E',
+                        darkText: '#E5E7EB',
+                        lightBg: '#FFFFFF',
+                        lightCard: '#F3F4F6',
+                        lightPrimary: '#2563EB',
+                        lightText: '#111827',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4B5563; border-radius: 10px; }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Fixed AI Chat Window Styling */
+        #ai-chat-window {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            z-index: 9999;
+        }
+        #ai-chat-window.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+        
+        .dot-pulse { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        .cert-badge {
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .cert-badge:hover { transform: scale(1.1); }
+        
+        .timer-glow {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-lightBg dark:bg-darkBg text-lightText dark:text-darkText font-inter transition-colors duration-200 antialiased overflow-x-hidden">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full z-[90] backdrop-blur-md bg-white/70 dark:bg-[#0B1120]/80 border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-tight text-lightPrimary dark:text-darkPrimary">
+                Mallesh <span class="text-lightText dark:text-darkText">C N</span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#projects" class="text-sm font-medium hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">Projects</a>
+                <a href="#experience" class="text-sm font-medium hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">Experience</a>
+                <a href="#skills" class="text-sm font-medium hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">Skills</a>
+                <a href="#contact" class="text-sm font-medium hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">Contact</a>
+                
+                <div class="flex items-center space-x-5 border-l border-gray-300 dark:border-gray-700 pl-6">
+                    <a href="https://github.com/rohancodes101" target="_blank" class="hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/malleshcn" target="_blank" class="hover:text-lightPrimary dark:hover:text-darkPrimary transition-colors">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <button id="theme-toggle" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+                        <i data-lucide="moon" id="theme-icon-dark" class="w-5 h-5 hidden"></i>
+                        <i data-lucide="sun" id="theme-icon-light" class="w-5 h-5 hidden"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="md:hidden flex items-center space-x-4">
+                <button id="theme-toggle-mobile" class="p-1">
+                    <i data-lucide="moon" id="theme-icon-dark-mobile" class="w-5 h-5 hidden"></i>
+                    <i data-lucide="sun" id="theme-icon-light-mobile" class="w-5 h-5 hidden"></i>
+                </button>
+                <button id="mobile-menu-btn"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-lightBg dark:bg-darkBg border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex-col space-y-4 text-center">
+            <a href="#projects" class="block text-sm font-medium mobile-link">Projects</a>
+            <a href="#experience" class="block text-sm font-medium mobile-link">Experience</a>
+            <a href="#skills" class="block text-sm font-medium mobile-link">Skills</a>
+            <a href="#contact" class="block text-sm font-medium mobile-link">Contact</a>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12">
+        
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-[80vh] flex flex-col justify-center items-center text-center px-6 max-w-5xl mx-auto fade-in-section">
+            <h1 class="text-[42px] md:text-[56px] font-extrabold leading-tight mb-4 tracking-tight">
+                Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-lightPrimary to-blue-400 dark:from-darkPrimary dark:to-teal-300">Mallesh.</span>
+            </h1>
+            <h2 class="text-[20px] md:text-[28px] font-semibold text-gray-700 dark:text-gray-300 mb-6 font-mono">
+                Cloud & Automation Engineer
+            </h2>
+            <div class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-darkSecondary px-4 py-1.5 rounded-full font-mono text-sm font-medium mb-8 border border-green-200 dark:border-green-800">
+                <i data-lucide="award" class="w-4 h-4"></i>
+                Microsoft Certified DevOps Engineer Expert [AZ-400]
+            </div>
+            <p id="hero-description" class="text-[16px] md:text-[18px] text-gray-600 dark:text-gray-400 mb-12 max-w-2xl leading-relaxed">
+                <!-- Data injected via JS -->
+            </p>
+            
+            <!-- BUTTON GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl">
+                <a href="#projects" class="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white bg-lightPrimary dark:bg-darkPrimary hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i> View Projects
+                </a>
+                
+                <button onclick="openAIChat('Brief me on your technical background')" class="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold border-2 border-lightPrimary dark:border-darkPrimary text-lightPrimary dark:text-darkPrimary hover:bg-lightPrimary/5 dark:hover:bg-darkPrimary/5 transition-all duration-300 transform hover:-translate-y-1">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> Interview Mallesh
+                </button>
+                
+                <a href="#" onclick="window.open('https://your-resume-link.com', '_blank')" class="flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold border-2 border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white transition-all duration-300 transform hover:-translate-y-1">
+                    <i data-lucide="download" class="w-5 h-5"></i> Resume
+                </a>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="py-20 px-6 max-w-4xl mx-auto fade-in-section">
+            <h2 class="text-[32px] font-bold mb-12 flex items-center gap-3">
+                <i data-lucide="briefcase" class="text-lightPrimary dark:text-darkPrimary"></i> Professional Experience
+            </h2>
+            <div id="experience-container" class="relative border-l-2 border-gray-200 dark:border-gray-800 ml-3 md:ml-0">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="py-20 px-6 max-w-6xl mx-auto fade-in-section">
+            <h2 class="text-[32px] font-bold mb-12 text-center">Featured AI & DevOps Projects</h2>
+            <div id="projects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- SKILLS & CERTS -->
+        <section id="skills" class="py-20 px-6 max-w-6xl mx-auto fade-in-section bg-gray-50 dark:bg-[#111827]/50 rounded-3xl mt-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-xl font-bold mb-6 font-mono text-lightPrimary dark:text-darkPrimary">Technical Proficiencies</h3>
+                    <div class="chart-container relative h-[350px]">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <div id="skills-container" class="grid grid-cols-1 sm:grid-cols-2 gap-8"></div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-xl font-bold mb-8 font-mono text-lightPrimary dark:text-darkPrimary">Verified Certifications</h3>
+                        <div class="grid grid-cols-3 gap-6">
+                            <div class="flex flex-col items-center gap-2 group">
+                                <img src="https://learn.microsoft.com/en-us/media/learn/certification/badges/microsoft-certified-associate-badge.svg" alt="AZ-104" class="cert-badge w-20 h-20 md:w-24 md:h-24">
+                                <span class="text-[10px] font-bold font-mono opacity-50 group-hover:opacity-100 transition-opacity">AZ-104</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 group">
+                                <img src="https://learn.microsoft.com/en-us/media/learn/certification/badges/microsoft-certified-expert-badge.svg" alt="AZ-400" class="cert-badge w-20 h-20 md:w-24 md:h-24">
+                                <span class="text-[10px] font-bold font-mono opacity-50 group-hover:opacity-100 transition-opacity">AZ-400</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 group">
+                                <img src="https://images.credly.com/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png" alt="AWS CLF" class="cert-badge w-20 h-20 md:w-24 md:h-24">
+                                <span class="text-[10px] font-bold font-mono opacity-50 group-hover:opacity-100 transition-opacity">AWS CLF-C02</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="py-24 px-6 max-w-3xl mx-auto text-center fade-in-section">
+            <h2 class="text-[32px] font-bold mb-6">Let's Connect</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-8">Currently exploring advanced Cloud Automation and AI Observability roles.</p>
+            <div class="flex flex-wrap items-center justify-center gap-6 mt-8">
+                <a id="email-btn" href="#" class="flex items-center gap-2 px-10 py-4 rounded-xl font-bold text-white bg-lightPrimary dark:bg-darkPrimary hover:scale-105 transition-transform">
+                    <i data-lucide="mail" class="w-5 h-5"></i> Say Hello
+                </a>
+                <a href="https://linkedin.com/in/malleshcn" target="_blank" class="flex items-center gap-2 px-10 py-4 rounded-xl font-bold border-2 border-gray-300 dark:border-gray-700 hover:border-blue-500 transition-colors">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 py-8 text-center bg-white dark:bg-darkBg">
+        <p class="text-gray-500 dark:text-gray-400 font-mono text-xs">
+            © <span id="current-year"></span> Mallesh C N | Engineered with 💙 & AI
+        </p>
+    </footer>
+
+    <!-- AI CHAT WIDGET -->
+    <div class="fixed bottom-6 right-6 z-[9999]">
+        <div id="ai-chat-window" class="absolute bottom-20 right-0 w-[320px] sm:w-[400px] bg-white dark:bg-darkCard rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col h-[500px]">
+            <!-- Header -->
+            <div class="bg-lightPrimary dark:bg-darkPrimary p-4 text-white flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    <span class="font-bold text-sm">Career Assistant</span>
+                </div>
+                <button onclick="toggleAIChat()" class="hover:bg-white/20 p-1 rounded-md transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <!-- Messages Area -->
+            <div id="chat-messages" class="flex-grow overflow-y-auto p-4 space-y-4 text-sm scroll-smooth dark:text-gray-200 bg-gray-50/50 dark:bg-gray-900/30">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none p-4 shadow-sm border dark:border-gray-700 max-w-[85%]">
+                    Welcome! I'm Mallesh's AI persona. I can explain his IBM experience, AZ-400 cert, or specific projects. What would you like to know?
+                </div>
+            </div>
+            <!-- Indicator -->
+            <div id="typing-indicator" class="hidden px-4 py-2 text-xs italic opacity-60 dark:text-blue-400 flex items-center gap-1">
+                <span>AI is thinking</span>
+                <span class="dot-pulse">.</span><span class="dot-pulse">.</span><span class="dot-pulse">.</span>
+            </div>
+            <!-- Input Area -->
+            <div class="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-darkCard shrink-0">
+                <form onsubmit="handleChatSubmit(event)" class="flex gap-2">
+                    <input id="chat-input" type="text" autocomplete="off" placeholder="Ask about Mallesh's skills..." class="flex-grow bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-lightPrimary dark:focus:ring-darkPrimary dark:text-white focus:outline-none">
+                    <button type="submit" class="bg-lightPrimary dark:bg-darkPrimary text-white p-2.5 rounded-xl hover:opacity-90 transition-opacity">
+                        <i data-lucide="send" class="w-5 h-5"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- FAB -->
+        <button id="ai-fab" onclick="toggleAIChat()" class="w-16 h-16 bg-lightPrimary dark:bg-darkPrimary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-all duration-300">
+            <i data-lucide="sparkles" class="w-7 h-7"></i>
+        </button>
+    </div>
+
+    <!-- AI PROJECT MODAL -->
+    <div id="ai-project-modal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+        <div class="bg-white dark:bg-darkCard w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
+            <div class="p-6 border-b dark:border-gray-800 flex justify-between items-center">
+                <h3 id="modal-project-title" class="text-xl font-bold dark:text-white flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-5 h-5 text-blue-500"></i> AI Architecture Review
+                </h3>
+                <button onclick="closeProjectModal()" class="text-gray-500 hover:text-red-500 transition-colors"><i data-lucide="x"></i></button>
+            </div>
+            <div id="modal-content" class="p-8 max-h-[60vh] overflow-y-auto text-gray-700 dark:text-gray-300 space-y-4 leading-relaxed"></div>
+        </div>
+    </div>
+
+    <script>
+
+        const portfolioData = {
+          "metadata": {
+            "name": "Mallesh C N",
+            "role": "Cloud & Automation Engineer",
+            "tagline": "I build infrastructure automation, operational analytics pipelines, and AI-assisted DevOps tools that improve system reliability and eliminate manual operational work.",
+            "email": "cnmallesh500@gmail.com",
+            "socials": {
+              "github": "https://github.com/rohancodes101",
+              "linkedin": "https://linkedin.com/in/malleshcn"
+            }
+          },
+          "experience": [
+            {
+              "company": "IBM",
+              "role": "Cloud Infrastructure & Automation Engineer",
+              "startDate": "2025-02-01T00:00:00",
+              "isCurrent": true,
+              "description": "Orchestrating infrastructure validation and operational metrics for enterprise cloud services.",
+              "highlights": [
+                "Automated post-change infrastructure validation for Keycloak and IDM services using Ansible, reducing validation time from 30+ to 4 minutes.",
+                "Engineered automated executive reporting for Symphony clusters, cutting manual effort by 85%.",
+                "Built an SLA breach detection engine monitoring 12,000+ servers globally."
+              ]
+            },
+            {
+              "company": "ShareChat (Mohalla Tech)",
+              "role": "Backend Developer Intern",
+              "period": "Oct 2024 – Feb 2025",
+              "description": "Developed predictive moderation tools and engagement analytics dashboards.",
+              "highlights": [
+                "Built trending content detection systems using geo-signals and engagement patterns.",
+                "Optimized spam detection workflows using Superset and Metabase SQL Lab.",
+                "Designed TAT visualization dashboards using MySQL and BigQuery."
+              ]
+            }
+          ],
+          "projects": [
+            {
+              "id": "cria-rag",
+              "title": "CRIA — Change Record Agent",
+              "description": "AI system that converts natural language change descriptions into structured enterprise change requests using RAG pipelines. Built using IBM Granite LLM Models",
+              "tags": ["Python", "RAG", "FAISS", "IBM Granite", "Automation"],
+              "links": { "github": "https://github.com/rohancodes101/cria-enterprise-rag" },
+              "icon": "bot"
+            },
+            {
+              "id": "incident-lens",
+              "title": "IncidentLens AI",
+              "description": "Operational intelligence system that analyzes historical incident data to detect recurring production failures and improve incident reporting quality.",
+              "tags": ["Python", "Vector Search", "Embeddings", "Observability"],
+              "links": { "github": "#" },
+              "icon": "search"
+            },
+            {
+              "id": "findmypic",
+              "title": "FindMyPic — Local Search",
+              "description": "AI powered image search tool using vector embeddings to retrieve images using natural language descriptions.",
+              "tags": ["Python", "Vector Search", "ChromaDB", "AI"],
+              "links": { "github": "#" },
+              "icon": "search"
+            }
+          ],
+          "skills": {
+            "Cloud Platforms": ["Azure", "AWS", "IBM Cloud"],
+            "DevOps Tools": ["Ansible", "Terraform", "Docker", "K8s"],
+            "Development": ["Python", "Java", "Bash", "PowerShell"],
+            "AI Frameworks": ["RAG", "FAISS", "Embeddings", "LLMs"]
+          }
+        };
+
+        // TICKING TIMER LOGIC
+        function updateTimer() {
+            const startDate = new Date(portfolioData.experience[0].startDate);
+            const now = new Date();
+            const diff = now - startDate;
+
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const timerEl = document.getElementById('ibm-timer');
+            if (timerEl) {
+                timerEl.innerText = `${years}y ${months}m ${days}d | ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+        }
+        setInterval(updateTimer, 1000);
+
+        // API CALLS
+        async function callGemini(prompt, sys) {
+
+        const res = await fetch("/.netlify/functions/gemini", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+            prompt: prompt,
+            systemPrompt: sys
+            })
+        });
+
+        const data = await res.json();
+
+        return data.candidates?.[0]?.content?.parts?.[0]?.text || "AI failed.";
+        }
+        
+        // CHAT HANDLERS
+        function toggleAIChat() { document.getElementById('ai-chat-window').classList.toggle('open'); }
+        async function openAIChat(q) { toggleAIChat(); if(q) { document.getElementById('chat-input').value = q; handleChatSubmit(new Event('submit')); } }
+        async function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const query = input.value.trim();
+            if(!query) return;
+            addMsg(query, 'user');
+            input.value = '';
+            document.getElementById('typing-indicator').classList.remove('hidden');
+            const resp = await callGemini(query, `You are Mallesh's Technical Persona. Use this context: ${JSON.stringify(portfolioData)}. Be professional, brief, and technical.`);
+            document.getElementById('typing-indicator').classList.add('hidden');
+            addMsg(resp, 'ai');
+        }
+        function addMsg(t, r) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = r === 'user' 
+                ? 'bg-lightPrimary dark:bg-darkPrimary text-white rounded-2xl rounded-tr-none p-4 shadow-sm ml-auto max-w-[85%]' 
+                : 'bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none p-4 shadow-sm border dark:border-gray-700 max-w-[85%]';
+            div.innerHTML = t.replace(/\n/g, '<br>');
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // DEEP DIVE
+        async function deepDive(id) {
+            const p = portfolioData.projects.find(x => x.id === id);
+            const m = document.getElementById('ai-project-modal');
+            const c = document.getElementById('modal-content');
+            document.getElementById('modal-project-title').innerText = `Architecture Deep Dive: ${p.title}`;
+            c.innerHTML = '<div class="flex items-center justify-center py-10"><div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div></div>';
+            m.classList.remove('hidden'); m.classList.add('flex');
+            const res = await callGemini(`Explain technical architecture and impact: ${JSON.stringify(p)}`, "Senior Solutions Architect");
+            c.innerHTML = res.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+        }
+        function closeProjectModal() { document.getElementById('ai-project-modal').classList.add('hidden'); }
+
+        // DOM RENDER
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('hero-description').innerText = portfolioData.metadata.tagline;
+            document.getElementById('email-btn').href = `mailto:${portfolioData.metadata.email}`;
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            // Experience
+            const exC = document.getElementById('experience-container');
+            portfolioData.experience.forEach((job) => {
+                exC.innerHTML += `
+                    <div class="relative pl-8 pb-12 group">
+                        <div class="absolute w-4 h-4 bg-lightPrimary dark:bg-darkPrimary rounded-full -left-[9px] top-1.5 ring-4 ring-white dark:ring-[#0B1120]"></div>
+                        <h3 class="text-xl font-bold">${job.role}</h3>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                            <span class="text-sm font-bold opacity-70">${job.company}</span>
+                            ${job.isCurrent ? `<span id="ibm-timer" class="bg-blue-100 dark:bg-blue-900/30 px-4 py-1 rounded-full text-[11px] font-bold border border-blue-200 dark:border-blue-800 timer-glow text-blue-600 dark:text-blue-300">...</span>` : `<span class="text-xs opacity-50 uppercase tracking-widest font-bold">${job.period}</span>`}
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">${job.description}</p>
+                        <ul class="text-sm space-y-2 opacity-80">${job.highlights.map(h => `<li class="flex gap-3"><span>⚡</span> ${h}</li>`).join('')}</ul>
+                    </div>
+                `;
+            });
+
+            // Projects
+            const prC = document.getElementById('projects-container');
+            portfolioData.projects.forEach(p => {
+                prC.innerHTML += `
+                    <div class="bg-white dark:bg-darkCard rounded-2xl p-6 border border-gray-100 dark:border-gray-800 flex flex-col h-full hover:shadow-2xl transition-all duration-300">
+                        <div class="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl w-fit mb-4"><i data-lucide="${p.icon}" class="text-blue-600 dark:text-blue-400"></i></div>
+                        <h3 class="text-lg font-bold mb-2">${p.title}</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 flex-grow leading-relaxed">${p.description}</p>
+                        <button onclick="deepDive('${p.id}')" class="text-xs font-bold text-lightPrimary dark:text-darkPrimary mb-6 flex items-center gap-1 hover:gap-2 transition-all">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i> AI Analysis
+                        </button>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t dark:border-gray-800">${p.tags.map(t => `<span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 rounded-lg text-[10px] font-mono font-bold">${t}</span>`).join('')}</div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+
+            // Skills
+            const skC = document.getElementById('skills-container');
+            Object.entries(portfolioData.skills).forEach(([k, v]) => {
+                skC.innerHTML += `<div><h4 class="font-bold mb-3 border-b dark:border-gray-700 pb-1 text-xs uppercase tracking-widest opacity-40">${k}</h4><ul class="text-sm space-y-2">${v.map(s => `<li class="flex items-center gap-2"><div class="w-1 h-1 bg-blue-500 rounded-full"></div> ${s}</li>`).join('')}</ul></div>`;
+            });
+
+            initChart();
+            updateTimer();
+        });
+
+        // CHARTS & THEME
+        function initChart() {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const d = document.documentElement.classList.contains('dark');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(portfolioData.skills),
+                    datasets: [{ data: Object.values(portfolioData.skills).map(v => v.length), backgroundColor: ['#38BDF8', '#22C55E', '#8B5CF6', '#F59E0B'], borderWidth: 0, hoverOffset: 15 }]
+                },
+                options: { 
+                    maintainAspectRatio: false, 
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { color: d ? '#94A3B8' : '#475569', font: { family: 'JetBrains Mono', size: 10 } } } 
+                    } 
+                }
+            });
+        }
+
+        const applyTheme = (dark) => {
+            document.documentElement.classList.toggle('dark', dark);
+            document.querySelectorAll('[id^="theme-icon-dark"]').forEach(el => el.classList.toggle('hidden', dark));
+            document.querySelectorAll('[id^="theme-icon-light"]').forEach(el => el.classList.toggle('hidden', !dark));
+            const c = Chart.getChart('skillsChart'); if(c) { c.options.plugins.legend.labels.color = dark ? '#94A3B8' : '#475569'; c.update(); }
+        };
+        let isDark = localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        applyTheme(isDark);
+        [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')].forEach(b => b.addEventListener('click', () => { isDark = !isDark; localStorage.setItem('theme', isDark ? 'dark' : 'light'); applyTheme(isDark); }));
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+        const obs = new IntersectionObserver((es) => { es.forEach(e => { if(e.isIntersecting) e.target.classList.add('is-visible'); }); }, { threshold: 0.1 });
+        setTimeout(() => document.querySelectorAll('.fade-in-section').forEach(s => obs.observe(s)), 100);
+    </script>
+</body>
+</html>
